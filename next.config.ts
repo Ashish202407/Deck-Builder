@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  output: "export",
+  basePath: process.env.NODE_ENV === "production" ? "/Deck-Builder" : "",
+  assetPrefix: process.env.NODE_ENV === "production" ? "/Deck-Builder" : "",
+  images: {
+    unoptimized: true,
+  },
+  trailingSlash: true,
 };
 
 export default nextConfig;

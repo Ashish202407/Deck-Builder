@@ -1,5 +1,5 @@
 {
-  "name": "deck-builder-temp",
+  "name": "analysis-deck-builder",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "framer-motion": "^12.36.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "recharts": "^3.8.0",
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
