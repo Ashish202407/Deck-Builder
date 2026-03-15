@@ -45,6 +45,11 @@ export default function PreviewMode() {
 
   const handleDownloadPdf = async () => {
     setIsGenerating(true);
+    // Remove scaling during capture so html2canvas gets full-size slides
+    const prevScale = scale;
+    setScale(1);
+    // Wait for React to re-render at scale=1
+    await new Promise((r) => setTimeout(r, 300));
     try {
       const blob = await generatePdf((current, total) => {
         setProgress({ current, total });
@@ -57,6 +62,7 @@ export default function PreviewMode() {
       console.error("PDF generation failed:", err);
       alert("PDF generation failed. Please try again.");
     } finally {
+      setScale(prevScale);
       setIsGenerating(false);
     }
   };
@@ -209,17 +215,22 @@ export default function PreviewMode() {
       {/* Slides - stacked vertically with scaling */}
       <div
         ref={containerRef}
+        id="pdf-capture-area"
         className="flex flex-col items-center gap-6 pb-20"
       >
         {slides.map((slide, i) => (
           <div
             key={i}
-            className="shadow-2xl rounded-sm overflow-hidden"
-            style={{
-              transform: `scale(${scale})`,
-              transformOrigin: "top center",
-              marginBottom: `${-(720 * (1 - scale))}px`,
-            }}
+            className={`rounded-sm overflow-hidden ${isGenerating ? "" : "shadow-2xl"}`}
+            style={
+              isGenerating
+                ? {} // No transform during PDF generation
+                : {
+                    transform: `scale(${scale})`,
+                    transformOrigin: "top center",
+                    marginBottom: `${-(720 * (1 - scale))}px`,
+                  }
+            }
           >
             {renderSlide(slide, i)}
           </div>
